@@ -1,0 +1,1 @@
+export const URL_STR = `http://universities.hipolabs.com`

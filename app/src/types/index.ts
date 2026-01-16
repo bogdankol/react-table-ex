@@ -9,3 +9,10 @@ export enum ESortOrder {
   asc = 'asc',
   desc = 'desc'
 }
+
+export interface IItemData {
+	country: string
+	name: string
+	web_pages: string[]
+	['state-province']: string | null
+}
