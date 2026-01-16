@@ -1,33 +1,17 @@
 import type { IItemData } from '@/app/(pages)/table-hand/content'
 import { EColumns, ESortOrder } from '@/app/src/types'
-import { useMemo, useState } from 'react'
+import { Dispatch, SetStateAction, useMemo, useState } from 'react'
 interface IProps {
 	COLUMNS: string[]
-	data: IItemData[]
+	sortedData: IItemData[]
+  sortKey: EColumns | null
+  sortOrder: ESortOrder | null
+  setSortKey: Dispatch<SetStateAction<EColumns | null>>
+  setSortOrder: Dispatch<SetStateAction<ESortOrder | null>>
 }
 
-function TableHandmade({ COLUMNS, data }: IProps) {
-	const [sortKey, setSortKey] = useState<EColumns | null>(null)
-	const [sortOrder, setSortOrder] = useState<ESortOrder | null>(null)
-
+function TableHandmade({ COLUMNS, sortedData, sortKey, sortOrder, setSortKey, setSortOrder }: IProps) {
   const columnsLength = useMemo(() => COLUMNS.length, [COLUMNS])
-
-	const sortedData = useMemo(() => {
-		if (!sortKey || !sortOrder) return data
-
-			const res = data.toSorted((a, b) => {
-
-        const aVal = sortKey === EColumns.web_pages ? a[sortKey].length : a[sortKey] ? a[sortKey] : ''
-        const bVal = sortKey === EColumns.web_pages ? b[sortKey].length : b[sortKey] ? b[sortKey] : ''
-
-        if (sortOrder === ESortOrder.asc) {
-          return sortKey === EColumns.web_pages ? Number(aVal) - Number(bVal) : String(aVal).localeCompare(String(bVal))
-
-        } return sortKey === EColumns.web_pages ? Number(bVal) - Number(aVal) : String(bVal).localeCompare(String(aVal))
-      })
-
-		return res
-	}, [sortKey, sortOrder, data])
 
 	function THeadClickHandler(e: React.MouseEvent<HTMLLIElement, MouseEvent>) {
 		const id = e.currentTarget.id as EColumns

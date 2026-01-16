@@ -6,6 +6,7 @@ import { COLUMNS, countries } from '@/app/src/mockData/data_tableHandmade'
 import { useMemo, useState } from 'react'
 import Pagination from '@/app/src/components/Pagination'
 import Filters from '@/app/src/components/Filters'
+import { EColumns, ESortOrder } from '@/app/src/types'
 
 const URL_STR = `http://universities.hipolabs.com`
 const NUMBER_PER_PAGE = 6
@@ -21,6 +22,8 @@ function Content() {
 	const [page, setPage] = useState(1)
 	const [selectedCountry, setSelectedCountry] = useState(() => countries[0])
 	const [nameInput, setNameInput] = useState('')
+	const [sortKey, setSortKey] = useState<EColumns | null>(null)
+	const [sortOrder, setSortOrder] = useState<ESortOrder | null>(null)
 
 	const { data, isPending, error } = useQuery({
 		queryKey: ['rows', selectedCountry, nameInput],
@@ -35,14 +38,42 @@ function Content() {
 		staleTime: 300000,
 	})
 
-	console.log({ data, nameInput })
+	const sortedData = useMemo(() => {
+		if (!sortKey || !sortOrder) return data
+
+		const res = data?.toSorted((a, b) => {
+			const aVal =
+				sortKey === EColumns.web_pages
+					? a[sortKey].length
+					: a[sortKey]
+					? a[sortKey]
+					: ''
+			const bVal =
+				sortKey === EColumns.web_pages
+					? b[sortKey].length
+					: b[sortKey]
+					? b[sortKey]
+					: ''
+
+			if (sortOrder === ESortOrder.asc) {
+				return sortKey === EColumns.web_pages
+					? Number(aVal) - Number(bVal)
+					: String(aVal).localeCompare(String(bVal))
+			}
+			return sortKey === EColumns.web_pages
+				? Number(bVal) - Number(aVal)
+				: String(bVal).localeCompare(String(aVal))
+		})
+
+		return res
+	}, [sortKey, sortOrder, data])
 
 	const itemsForCurrentPage = useMemo(() => {
-		return data
-			? data.slice((page - 1) * NUMBER_PER_PAGE, page * NUMBER_PER_PAGE)
+		return sortedData
+			? sortedData.slice((page - 1) * NUMBER_PER_PAGE, page * NUMBER_PER_PAGE)
 			: []
-	}, [page, data])
-  
+	}, [page, sortedData])
+
 	const totalPages = !!data?.length
 		? Math.ceil(data.length / NUMBER_PER_PAGE)
 		: 0
@@ -59,7 +90,16 @@ function Content() {
 			{error ? <p>{error.message}</p> : null}
 			{!isPending && !!data?.length ? (
 				<>
-					<TableHandmade {...{ COLUMNS, data: itemsForCurrentPage }} />
+					<TableHandmade
+						{...{
+							COLUMNS,
+							sortedData: itemsForCurrentPage,
+							setSortKey,
+							setSortOrder,
+							sortKey,
+							sortOrder,
+						}}
+					/>
 					<Pagination {...{ page, setPage, totalPages }} />
 				</>
 			) : (
