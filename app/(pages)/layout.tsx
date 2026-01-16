@@ -1,24 +1,9 @@
-'use client'
-import type { Metadata } from 'next'
-import {
-	QueryClient,
-	QueryClientProvider,
-} from '@tanstack/react-query'
+import Providers from './Providers'
 
-const queryClient = new QueryClient()
-
-export default function RootLayout({
+export default function Layout({
 	children,
 }: Readonly<{
 	children: React.ReactNode
 }>) {
-	return (
-		<html lang='en'>
-			<body>
-				<QueryClientProvider client={queryClient}>
-					{children}
-				</QueryClientProvider>
-			</body>
-		</html>
-	)
+	return <Providers>{children}</Providers>
 }
