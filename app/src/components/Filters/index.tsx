@@ -1,5 +1,5 @@
 import { countries } from '@/app/src/mockData/data_tableHandmade'
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
+import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import { addOutsideClickEventHandlerToRef } from '../../helpers/client'
 
 function Filters({
@@ -62,17 +62,15 @@ function CountrySelector({
 
 	const parentRef = useRef<HTMLDivElement>(null)
 
+  const clickHandler = useCallback((e: MouseEvent) => addOutsideClickEventHandlerToRef(parentRef, e, setIsOpened), [parentRef, setIsOpened])
+
 	useEffect(() => {
-		document.addEventListener('click', e =>
-			addOutsideClickEventHandlerToRef(parentRef, e, setIsOpened),
-		)
+		document.addEventListener('click', clickHandler)
 
 		return () => {
-			document.removeEventListener('click', e =>
-				addOutsideClickEventHandlerToRef(parentRef, e, setIsOpened),
-			)
+			document.removeEventListener('click', clickHandler)
 		}
-	}, [])
+	}, [clickHandler])
 
 	return (
 		<div
