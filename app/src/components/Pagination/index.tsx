@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction, useMemo } from 'react'
 
 function Pagination({
 	page,
@@ -9,31 +9,21 @@ function Pagination({
 	setPage: Dispatch<SetStateAction<number>>
 	totalPages: number
 }) {
+
+  const buttonsSequence = useMemo(() => {
+    const sequence = [page - 2, page - 1, page, page + 1, page + 2]
+    return sequence.filter(el => el > 0 && el < totalPages)
+  }, [page, totalPages])
 	return (
 		<ul
 			className='flex justify-end space-x-3'
 		>
-			{page - 1 > 0 ? (
-				<PaginationBtn
-					num={page - 1}
-					currentPage={page}
+      {buttonsSequence.map(el => <PaginationBtn
+					num={el}
+					currentPage={el}
           setPage={setPage}
-				/>
-			) : null}
-			{page > 0 ? (
-				<PaginationBtn
-					num={page}
-					currentPage={page}
-          setPage={setPage}
-				/>
-			) : null}
-			{page + 1 <= totalPages ? (
-				<PaginationBtn
-					num={page + 1}
-					currentPage={page}
-          setPage={setPage}
-				/>
-			) : null}
+          key={el}
+				/>)}
 		</ul>
 	)
 }

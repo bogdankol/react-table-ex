@@ -1,6 +1,5 @@
 'use client'
 import TableHandmade from '@/app/src/components/Tables/HandMadeTable'
-import axios from 'axios'
 import { COLUMNS } from '@/app/src/mockData/data_tableHandmade'
 import Pagination from '@/app/src/components/Pagination'
 import Filters from '@/app/src/components/Filters'
@@ -50,6 +49,7 @@ function Content() {
 			) : (
 				<p>No data found</p>
 			)}
+      <button onPointerDown={_ => console.log('pointer')} onClick={_ => console.log('click')}>BTN</button>
 		</div>
 	)
 }
