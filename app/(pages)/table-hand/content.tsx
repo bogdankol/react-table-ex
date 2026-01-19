@@ -6,9 +6,9 @@ import Filters from '@/app/src/components/Filters'
 import useSortedData from '@/app/src/hooks/useSortedData'
 
 function Content() {
-  const {
-		page,
-		setPage,
+	const {
+		currentPage,
+		setCurrentPage,
 		totalPages,
 		itemsForCurrentPage,
 		isPending,
@@ -18,8 +18,8 @@ function Content() {
 		setNameInput,
 		setSortKey,
 		setSortOrder,
-    sortKey,
-    sortOrder
+		sortKey,
+		sortOrder,
 	} = useSortedData()
 
 	return (
@@ -27,7 +27,7 @@ function Content() {
 			<Filters
 				setSelectedCountry={setSelectedCountry}
 				selectedCountry={selectedCountry}
-				setPage={setPage}
+				setCurrentPage={setCurrentPage}
 				setNameInput={setNameInput}
 			/>
 			{isPending ? <h2>Loading...</h2> : null}
@@ -44,12 +44,11 @@ function Content() {
 							sortOrder,
 						}}
 					/>
-					<Pagination {...{ page, setPage, totalPages }} />
+					<Pagination {...{ currentPage, setCurrentPage, totalPages }} />
 				</>
 			) : (
 				<p>No data found</p>
 			)}
-      <button onPointerDown={_ => console.log('pointer')} onClick={_ => console.log('click')}>BTN</button>
 		</div>
 	)
 }

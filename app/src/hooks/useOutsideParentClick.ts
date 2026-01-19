@@ -7,7 +7,6 @@ export function useOutsideRefClick(
 ) {
 	const clickHandler = useCallback(
 		(e: PointerEvent) => {
-
       const composedPath = e?.composedPath() ?? []
 
 			if (ref.current && !composedPath.includes(ref.current)) {

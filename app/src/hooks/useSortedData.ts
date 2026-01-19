@@ -8,7 +8,7 @@ import axios, { AxiosError } from 'axios'
 const NUMBER_PER_PAGE = 6
 
 export default function useSortedData() {
-	const [page, setPage] = useState(1)
+	const [currentPage, setCurrentPage] = useState(1)
 	const [selectedCountry, setSelectedCountry] = useState(() => countries[0])
 	const [nameInput, setNameInput] = useState('')
 	const [sortKey, setSortKey] = useState<EColumns | null>(null)
@@ -24,7 +24,7 @@ export default function useSortedData() {
 				)
 				.then(({ data }) => (!!data?.length ? data : [])),
 		staleTime: 5 * 60 * 1000,
-    enabled: !!selectedCountry,
+		enabled: !!selectedCountry,
 		retry: (failureCount, error) => {
 			if (axios.isAxiosError(error)) {
 				if (error.response?.status && error.response.status < 500) {
@@ -43,14 +43,14 @@ export default function useSortedData() {
 				sortKey === EColumns.web_pages
 					? a[sortKey].length
 					: a[sortKey]
-					? a[sortKey]
-					: ''
+						? a[sortKey]
+						: ''
 			const bVal =
 				sortKey === EColumns.web_pages
 					? b[sortKey].length
 					: b[sortKey]
-					? b[sortKey]
-					: ''
+						? b[sortKey]
+						: ''
 
 			if (sortOrder === ESortOrder.asc) {
 				return sortKey === EColumns.web_pages
@@ -67,17 +67,20 @@ export default function useSortedData() {
 
 	const itemsForCurrentPage = useMemo(() => {
 		return sortedData
-			? sortedData.slice((page - 1) * NUMBER_PER_PAGE, page * NUMBER_PER_PAGE)
+			? sortedData.slice(
+					(currentPage - 1) * NUMBER_PER_PAGE,
+					currentPage * NUMBER_PER_PAGE,
+				)
 			: []
-	}, [page, sortedData])
+	}, [currentPage, sortedData])
 
 	const totalPages = !!data?.length
 		? Math.ceil(data.length / NUMBER_PER_PAGE)
 		: 0
 
 	return {
-		page,
-		setPage,
+		currentPage,
+		setCurrentPage,
 		totalPages,
 		itemsForCurrentPage,
 		isPending,

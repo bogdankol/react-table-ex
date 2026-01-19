@@ -1,16 +1,22 @@
 import { countries } from '@/app/src/mockData/data_tableHandmade'
-import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
+import {
+	Dispatch,
+	SetStateAction,
+	useRef,
+	useState,
+} from 'react'
 import { useOutsideRefClick } from '../../hooks/useOutsideParentClick'
+import { useDebouncedValue } from '../../hooks/useDebouncedValue'
 
 function Filters({
 	setSelectedCountry,
 	selectedCountry,
-	setPage,
+	setCurrentPage,
 	setNameInput,
 }: {
 	setSelectedCountry?: Dispatch<SetStateAction<string>>
 	selectedCountry?: string
-	setPage: Dispatch<SetStateAction<number>>
+	setCurrentPage: Dispatch<SetStateAction<number>>
 	setNameInput?: Dispatch<SetStateAction<string>>
 }) {
 	return (
@@ -20,7 +26,7 @@ function Filters({
 					{...{
 						setSelectedCountry,
 						selectedCountry,
-						setPage,
+						setPage: setCurrentPage,
 					}}
 				/>
 			) : null}
@@ -35,16 +41,16 @@ function NameInputFilter({
 }: {
 	setNameInput: Dispatch<SetStateAction<string>>
 }) {
-	const timer = useRef<NodeJS.Timeout | null>(null)
+	const [inputVal, setInputVal] = useState('')
+
+	useDebouncedValue(inputVal, 2000, setNameInput)
 
 	return (
 		<input
 			placeholder='enter name...'
 			className='w-[150px] h-10 bg-blue-300 rounded flex items-center px-4 text-black font-bold'
-			onChange={e => {
-        if(timer.current) clearTimeout(timer.current)
-        timer.current = setTimeout(() => setNameInput(e.target.value), 2000)
-			}}
+			onChange={e => setInputVal(e.target.value)}
+			value={inputVal}
 		/>
 	)
 }
@@ -62,7 +68,7 @@ function CountrySelector({
 
 	const parentRef = useRef<HTMLDivElement>(null)
 
-  useOutsideRefClick(parentRef, () => setIsOpened(false), isOpened)
+	useOutsideRefClick(parentRef, () => setIsOpened(false), isOpened)
 
 	return (
 		<div
