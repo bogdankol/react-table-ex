@@ -31,7 +31,7 @@ function Content() {
 				setNameInput={setNameInput}
 			/>
 			{isPending ? <h2>Loading...</h2> : null}
-			{error ? <p>{error.message}</p> : null}
+			{error ? <p>Error: {error.message}</p> : null}
 			{!isPending && !!itemsForCurrentPage?.length ? (
 				<>
 					<TableHandmade
