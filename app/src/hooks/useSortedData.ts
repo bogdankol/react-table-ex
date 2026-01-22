@@ -32,5 +32,6 @@ export default function useSortedData() {
 		setSortOrder,
 		sortKey,
 		sortOrder,
+    data: data ?? []
 	}
 }

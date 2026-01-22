@@ -1,25 +1,25 @@
 'use client'
-import TableHandmade from '@/app/src/components/Tables/HandMadeTable'
-import { COLUMNS } from '@/app/src/mockData/data_tableHandmade'
-import Pagination from '@/app/src/components/Pagination'
+
 import Filters from '@/app/src/components/Filters'
+import Pagination from '@/app/src/components/Pagination'
+import TanstackTable from '@/app/src/components/Tables/TanstackTable'
 import useSortedData from '@/app/src/hooks/useSortedData'
 
 function Content() {
 	const {
 		currentPage,
-		setCurrentPage,
-		totalPages,
-		itemsForCurrentPage,
-		isPending,
 		error,
+		isPending,
+		itemsForCurrentPage,
 		selectedCountry,
-		setSelectedCountry,
+		setCurrentPage,
 		setNameInput,
+		setSelectedCountry,
 		setSortKey,
 		setSortOrder,
 		sortKey,
 		sortOrder,
+		totalPages,
 	} = useSortedData()
 
 	return (
@@ -33,20 +33,26 @@ function Content() {
 			{isPending ? <h2>Loading...</h2> : null}
 			{error ? <p>Error: {error.message}</p> : null}
 			{!isPending && !!itemsForCurrentPage?.length ? (
-				<>
-					<TableHandmade
-						{...{
-							COLUMNS,
-							sortedData: itemsForCurrentPage,
-							setSortKey,
-							setSortOrder,
-							sortKey,
-							sortOrder,
-              setCurrentPage
-						}}
-					/>
-					<Pagination {...{ currentPage, setCurrentPage, totalPages }} />
-				</>
+        <>
+          <TanstackTable
+            {...{
+              allData: itemsForCurrentPage,
+              totalPages,
+              currentPage,
+              setCurrentPage,
+              setSortKey,
+              setSortOrder,
+              sortKey,
+              sortOrder,
+            }}
+          />
+
+          <Pagination
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            totalPages={totalPages}
+          />
+        </>
 			) : (
 				<p>No data found</p>
 			)}

@@ -15,7 +15,7 @@ export default function useGetAPIData(
 		queryFn: () =>
 			doRequest
 				.get(
-					`/search?countryy=${encodeURIComponent(selectedCountry)}` +
+					`/search?country=${encodeURIComponent(selectedCountry)}` +
 						`${nameInput ? `&name=${nameInput}` : ''}`,
 				)
 				.then(({ data }) => (!!data?.length ? data : [])),

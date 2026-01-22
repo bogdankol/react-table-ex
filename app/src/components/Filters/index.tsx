@@ -1,10 +1,5 @@
 import { countries } from '@/app/src/mockData/data_tableHandmade'
-import {
-	Dispatch,
-	SetStateAction,
-	useRef,
-	useState,
-} from 'react'
+import { Dispatch, SetStateAction, useRef, useState } from 'react'
 import { useOutsideRefClick } from '../../hooks/useOutsideParentClick'
 import { useDebouncedValue } from '../../hooks/useDebouncedValue'
 
@@ -31,19 +26,21 @@ function Filters({
 				/>
 			) : null}
 
-			{setNameInput ? <NameInputFilter setNameInput={setNameInput} /> : null}
+			{setNameInput ? <NameInputFilter setNameInput={setNameInput} setCurrentPage={setCurrentPage} /> : null}
 		</div>
 	)
 }
 
 function NameInputFilter({
 	setNameInput,
+  setCurrentPage
 }: {
 	setNameInput: Dispatch<SetStateAction<string>>
+  setCurrentPage: Dispatch<SetStateAction<number>>
 }) {
 	const [inputVal, setInputVal] = useState('')
 
-	useDebouncedValue(inputVal, 2000, setNameInput)
+	useDebouncedValue(inputVal, 2000, setNameInput, setCurrentPage)
 
 	return (
 		<input

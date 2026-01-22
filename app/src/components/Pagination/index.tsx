@@ -17,7 +17,7 @@ function Pagination({
 			currentPage + 1,
 			currentPage + 2,
 		]
-		return sequence.filter(el => el > 0 && el < totalPages)
+		return sequence.filter(el => el > 0 && el <= totalPages)
 	}, [currentPage, totalPages])
 	return (
 		<ul className='flex justify-end space-x-3'>

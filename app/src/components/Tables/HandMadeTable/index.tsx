@@ -7,6 +7,7 @@ interface IProps {
 	sortOrder: ESortOrder | null
 	setSortKey: Dispatch<SetStateAction<EColumns | null>>
 	setSortOrder: Dispatch<SetStateAction<ESortOrder | null>>
+  setCurrentPage: Dispatch<SetStateAction<number>>
 }
 
 function TableHandmade({
@@ -16,6 +17,7 @@ function TableHandmade({
 	sortOrder,
 	setSortKey,
 	setSortOrder,
+  setCurrentPage
 }: IProps) {
 	const columnsLength = COLUMNS.length
 
@@ -33,6 +35,7 @@ function TableHandmade({
 			setSortKey(columnName)
 		}
 		setSortOrder(newSortOrder)
+    setCurrentPage(1)
 	}
 
 	return (
