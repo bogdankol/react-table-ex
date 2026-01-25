@@ -52,6 +52,7 @@ function NameInput({
 
 	return (
 		<input
+      placeholder='Enter name here...'
 			onChange={e => {
 				if (timer.current) clearTimeout(timer.current)
 

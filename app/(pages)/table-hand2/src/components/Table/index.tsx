@@ -15,7 +15,7 @@ function Table({
 }) {
 	return (
 		<div className='w-full border-2 border-amber-400 rounded-lg overflow-hidden'>
-			<ul className='grid grid-cols-4 text-center'>
+			<ul className='grid grid-cols-4 text-center' role='row'>
 				{columns.map(columnName => (
 					<li
 						key={columnName}
@@ -35,24 +35,25 @@ function Table({
 					</li>
 				))}
 			</ul>
-			<ul className=''>
+			<ul className='' role="rowgroup">
 				{data.map(el => (
 					<li
+            role="table-row"
 						key={el.name}
 						className='border-2 border-amber-400 grid grid-cols-4 text-center'
 					>
-						<div className='border-r-2 border-amber-400 px-4 py-2 '>
+						<div className='border-r-2 border-amber-400 px-4 py-2 ' role='cell'>
 							{el.name}
 						</div>
-						<div className='border-r-2 border-amber-400 px-4 py-2 '>
+						<div className='border-r-2 border-amber-400 px-4 py-2 ' role='cell'>
 							{el.country}
 						</div>
-						<div className='border-r-2 border-amber-400 px-4 py-2 '>
+						<div className='border-r-2 border-amber-400 px-4 py-2 ' role='cell'>
 							{el.web_pages.map(p => (
 								<p key={p}>{p}</p>
 							))}
 						</div>
-						<div>{el['state-province']}</div>
+						<div role='cell'>{el['state-province']}</div>
 					</li>
 				))}
 			</ul>

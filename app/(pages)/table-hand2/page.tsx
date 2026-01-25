@@ -17,8 +17,8 @@ function page() {
 
 	const { data, isPending, error } = useQuery<Item[]>({
 		queryKey: ['data', selectedCountry, nameInput],
-		queryFn: () =>
-			fetch(URL_STR + `search?country=${selectedCountry}` + `${nameInput ? `&name=${nameInput}` : ''}`)
+		queryFn: ({ signal }) =>
+			fetch(URL_STR + `search?country=${selectedCountry}` + `${nameInput ? `&name=${nameInput}` : ''}`, { signal })
 				.then(d => d.json())
 				.then(r => (!!r.length ? r : [])),
 		retry: (failureCount, error) => {
@@ -28,6 +28,7 @@ function page() {
 			alert(error?.message ?? 'ERROR')
 			return false
 		},
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
 	})
 
 	const setNewSortColumnName = useCallback(
