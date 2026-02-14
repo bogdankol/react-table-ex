@@ -7,6 +7,7 @@ import { EColumns, ESortOrder, Item } from './src/types/types'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import Pagination from './src/components/Pagination'
 import Filters from './src/components/Filters'
+import Image from 'next/image'
 
 function page() {
 	const [sortColumn, setSortColumn] = useState<EColumns | null>(null)
@@ -102,40 +103,59 @@ function page() {
 
 	const totalPages = data ? Math.ceil(data.length / PER_PAGE) : 0
 
-	return (
-		<div>
-			<Filters
-				{...{
-					selectedCountry,
-					setSelectedCountry,
-          setNameInput,
-          nameInput
-				}}
-			/>
-			{isPending && <p>Loading...</p>}
-			{error && <p>Error: {error.message}</p>}
-			{!error && !isPending && (
-				<>
-					<Table
-						{...{
-							data: itemsForCurrentPage,
-							columns: COLUMNS,
-							setNewSortColumnName,
-							sortColumn,
-							sortOrder,
-						}}
-					/>
+  function getPropFormObj<T, K extends keyof T>(obj: T, key: K) {
+    return obj[key]
+  }
 
-					<Pagination
-						{...{
-							currentPage,
-							setCurrentPage,
-							totalPages,
-						}}
-					/>
-				</>
-			)}
-		</div>
+  getPropFormObj({id: 123, name: 'asdasdad'}, 'id')
+
+	return (
+    <div>
+      <Image
+        alt='asd'
+        title='asd'
+        width='200'
+        height='300'
+        src='https://upload.wikimedia.org/wikipedia/commons/7/72/Billy_Herrington.jpg'
+        blurDataURL='data:image/jpeg;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAANABQDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=='
+        placeholder='blur'
+      />
+
+      <p className='selection:text-amber-600 selection:bg-amber-600'>asdasdasdasdasd</p>
+    </div>
+		// <div>
+		// 	<Filters
+		// 		{...{
+		// 			selectedCountry,
+		// 			setSelectedCountry,
+    //       setNameInput,
+    //       nameInput
+		// 		}}
+		// 	/>
+		// 	{isPending && <p>Loading...</p>}
+		// 	{error && <p>Error: {error.message}</p>}
+		// 	{!error && !isPending && (
+		// 		<>
+		// 			<Table
+		// 				{...{
+		// 					data: itemsForCurrentPage,
+		// 					columns: COLUMNS,
+		// 					setNewSortColumnName,
+		// 					sortColumn,
+		// 					sortOrder,
+		// 				}}
+		// 			/>
+
+		// 			<Pagination
+		// 				{...{
+		// 					currentPage,
+		// 					setCurrentPage,
+		// 					totalPages,
+		// 				}}
+		// 			/>
+		// 		</>
+		// 	)}
+		// </div>
 	)
 }
 

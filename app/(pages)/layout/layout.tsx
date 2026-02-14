@@ -1,12 +1,9 @@
-import Providers from './Providers'
-import { cookies } from 'next/headers'
 
 export default async function Layout({
 	children,
 }: Readonly<{
 	children: React.ReactNode
 }>) {
-  const cokies = await cookies()
   // console.log({cokies: cokies.get('authjs.csrf-token')})
-	return <Providers>LAYOUT1 {children}</Providers>
+	return <>LAYOUT2{children}</>
 }
