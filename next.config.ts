@@ -21,7 +21,6 @@ const nextConfig: NextConfig = {
     ],
     domains: ['upload.wikimedia.org', 'encrypted-tbn0.gstatic.com', 'media.istockphoto.com'],
   },
-  
 };
 
 export default nextConfig;
